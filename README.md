@@ -473,7 +473,7 @@ CustomLog /var/www/vhosts/site1.com/logs/access.log combined
 
 **5. Outil(s) peuvent vous permettre de fournir une vison des visites de chaque site à chaque Webmaster**
 
-- GoAccess (temps réel, console et web) :
-- AWStats (classique, détaillé) :
+- GoAccess (temps réel, console et web) : le plus recommendé
+- AWStats 
 - Matomo (anciennement Piwik)
 - Webalizer
