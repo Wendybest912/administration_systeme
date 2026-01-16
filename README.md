@@ -411,9 +411,69 @@ vi elasticsearch.yml
 ```bash
 cluster.name: elasticsearch-demo
 ```
-- 3. Decommenter #network.host: 192.168.0.1 et mettre 0.0.0.0
+- 3. Decommenter #network.host: 192.168.0.1 et mettre 0.0.0.0 permet a Elasticsearch d'ecouter les connexions sur tous les interfaces réseau 
 
 - 4. Decommenter #transport.host: 0.0.0.0 pour permettre a Elasticsearch d'ecouter sur tous les interfaces réseau 
 
 ## Le Web
 
+**1. Paquet a installer**
+
+```bash
+sudo  apt update sudo  apt  install apache2 \ apache2-utils \ ssl-cert \ certbot \ python3-certbot-apache
+```
+
+**Apache2** : le seveur web
+**certbot \ python3-certbot-apache**: pour la sécurité 
+
+**2. Organisation du stockage**
+
+On fera une organisation sous forme d'arborescence 
+
+```bash
+sudo  mkdir -p /var/www/vhosts
+```
+
+et ainsi pour chaque site qu'on créera on fera un sous répertoire qui adoptera cette strucure afin de bien les isoler les uns des autre 
+
+```bash 
+sudo  mkdir -p /var/www/vhosts/site1.com/{public_html,logs,conf,backup} 
+sudo  mkdir -p /var/www/vhosts/site2.com/{public_html,logs,conf,backup}
+```
+
+ainsi la structure devra ressembler a quelque chose comme ça:
+
+/var/www/vhosts/ 
+├── site1/ 
+│ ├── public_html/ 
+│ ├── logs/ 
+│ ├── conf/  
+│ └── backup/ 
+|  └── [autre]
+├── site2 
+│ ├── public_html/ 
+│ ├── logs/ 
+│ ├── conf/ 
+│ └── backup/
+|  └── [autre]
+
+
+**3. Installons PHP** 
+```bash
+sudo  apt  install php8.2 \ php8.2-fpm \ php8.2-mysql \ php8.2-mbstring \ php8.2-xml \ php8.2-curl \ php8.2-zip \ php8.2-gd \ php8.2-imagick \ libapache2-mod-php8.2
+```
+**4. organiser l'enregistrement séparé des visites des différents sites**
+
+Dans chaque VirtualHost :
+```apache
+ErrorLog /var/www/vhosts/site1.com/logs/error.log 
+CustomLog /var/www/vhosts/site1.com/logs/access.log combined
+```
+
+
+**5. Outil(s) peuvent vous permettre de fournir une vison des visites de chaque site à chaque Webmaster**
+
+- GoAccess (temps réel, console et web) :
+- AWStats (classique, détaillé) :
+- Matomo (anciennement Piwik)
+- Webalizer
